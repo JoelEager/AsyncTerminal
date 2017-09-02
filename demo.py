@@ -10,11 +10,12 @@ async def main():
         count += 1
 
         if terminal.isInputWaiting():
-            inputedChars = terminal.readBuffer()
+            inputedChars = terminal.readInput()
 
             terminal.writeln(" and I got some input: " + inputedChars)
 
             if "q" in inputedChars:
+                terminal.endTasks()
                 return
 
         else:

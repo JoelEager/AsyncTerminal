@@ -22,10 +22,10 @@ class WindowsSupport(GenericSupport):
 
     @classmethod
     def cleanup(cls):
-        print("Windows exit")
+        pass
 
     @classmethod
-    async def getChar(cls):
+    async def getInputChar(cls):
         # See docs at https://docs.python.org/3.6/library/msvcrt.html
 
         while True:

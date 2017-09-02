@@ -3,6 +3,8 @@ Extends GenericSupport with the calls that assume a Linux or Mac environment
 
 How this works:
     http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+    https://docs.python.org/3.6/library/termios.html
+    https://docs.python.org/3.6/library/tty.html
 """
 
 import sys
@@ -31,16 +33,15 @@ class UnixSupport(GenericSupport):
     @classmethod
     def cleanup(cls):
         termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, cls.__oldSettings)
-        print("Unix exit")
 
     @classmethod
-    async def getChar(cls):
+    async def getInputChar(cls):
         while True:
-            stdinFile = select.select([sys.stdin], [], [], 0.0)[0]
+            pendingInput = select.select([sys.stdin], [], [], 0.0)[0]
 
             # Make sure key is pressed before reading it
-            if stdinFile:
-                return stdinFile[0].buffer.read(1).decode("utf8")
+            if pendingInput:
+                return pendingInput[0].buffer.read(1).decode("utf8")
             else:
                 await asyncio.sleep(0.1)
 
