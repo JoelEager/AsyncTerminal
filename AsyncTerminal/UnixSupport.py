@@ -8,6 +8,8 @@ How this works:
 import sys
 import termios
 import tty
+import select
+import asyncio
 
 from .GenericSupport import GenericSupport
 
@@ -33,7 +35,14 @@ class UnixSupport(GenericSupport):
 
     @classmethod
     async def getChar(cls):
-        return sys.stdin.read(1)
+        while True:
+            stdinFile = select.select([sys.stdin], [], [], 0.0)[0]
+
+            # Make sure key is pressed before reading it
+            if stdinFile:
+                return stdinFile[0].buffer.read(1).decode("utf8")
+            else:
+                await asyncio.sleep(0.1)
 
     @classmethod
     def print(cls, message):
