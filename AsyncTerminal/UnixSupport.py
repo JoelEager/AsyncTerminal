@@ -2,7 +2,6 @@
 Extends GenericSupport with the calls that assume a Linux or Mac environment
 
 How this works:
-
     http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 """
 
@@ -30,9 +29,10 @@ class UnixSupport(GenericSupport):
     @classmethod
     def cleanup(cls):
         termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, cls.__oldSettings)
+        print("Unix exit")
 
     @classmethod
-    def getChar(cls):
+    async def getChar(cls):
         return sys.stdin.read(1)
 
     @classmethod

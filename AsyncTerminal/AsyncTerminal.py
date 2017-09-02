@@ -3,6 +3,7 @@ Provides the nice, application-facing terminal IO calls with support for use in 
 """
 
 import asyncio
+import atexit
 
 # Configure AsyncTerminal
 try:
@@ -14,33 +15,34 @@ except ImportError:
     from .WindowsSupport import WindowsSupport
     osSupport = WindowsSupport.setup()
 
-__inputBuffer = ""
+class __data:
+    inputBuffer = ""
 
 async def bufferedReaderTask():
-    global __inputBuffer
-
-    try:
-        while True:
-            __inputBuffer += await asyncio.get_event_loop().run_in_executor(None, osSupport.getChar)
-    except asyncio.CancelledError as e:
-        # Quit nicely
-        raise e
+    while True:
+        # Get char and then append to prevent a race condition caused by the async await
+        charIn = await osSupport.getChar()
+        __data.inputBuffer += charIn
 
 def readBuffer(clearBuffer=True):
-    global __inputBuffer
-
-    chars = __inputBuffer
+    chars = __data.inputBuffer
 
     if clearBuffer:
-        __inputBuffer = ""
+        __data.inputBuffer = ""
 
     return chars
 
 def isInputWaiting():
-    return __inputBuffer != ""
+    return __data.inputBuffer != ""
 
 def writeln(message):
     write(message + "\n")
 
 def write(message):
     osSupport.print(message)
+
+# Register bufferedReaderTask with asyncio
+asyncio.get_event_loop().create_task(bufferedReaderTask())
+
+# Register the cleanup function to get called on exit of the loop
+atexit.register(osSupport.cleanup)

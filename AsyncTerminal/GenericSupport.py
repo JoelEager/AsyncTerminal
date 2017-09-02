@@ -23,7 +23,7 @@ class GenericSupport():
         raise NotImplementedError()
 
     @classmethod
-    def getChar(cls):
+    async def getChar(cls):
         """
         Blocking IO call to get next character typed as a String
         """
