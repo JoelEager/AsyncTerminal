@@ -6,19 +6,19 @@ async def main():
     count = 1
 
     while True:
-        print("I is doing things: " + str(count), end="")
+        terminal.write("I is doing things: " + str(count))
         count += 1
 
         if terminal.isInputWaiting():
             inputedChars = terminal.readBuffer()
 
+            terminal.writeln(" and I got some input: " + inputedChars)
+
             if "q" in inputedChars:
-                print("")
                 return
 
-            print(" and I got some input: " + inputedChars)
         else:
-            print("")
+            terminal.writeln("")
 
         await asyncio.sleep(1)
 

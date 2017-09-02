@@ -28,3 +28,11 @@ class GenericSupport():
         Blocking IO call to get next character typed as a String
         """
         raise NotImplementedError()
+
+    @classmethod
+    def print(cls, message):
+        """
+        Writes the given message to the terminal
+            Does not append a newline
+        """
+        raise NotImplementedError()

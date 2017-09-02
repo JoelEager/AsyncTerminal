@@ -35,6 +35,10 @@ class WindowsSupport(GenericSupport):
             return byteIn.decode("utf8")
 
     @classmethod
+    def print(cls, message):
+        print(message, end="\n")
+
+    @classmethod
     def __sendEnter(cls):
         """
         Simulates a the enter key being pressed

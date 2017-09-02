@@ -38,3 +38,9 @@ def readBuffer(clearBuffer=True):
 
 def isInputWaiting():
     return __inputBuffer != ""
+
+def writeln(message):
+    write(message + "\n")
+
+def write(message):
+    osSupport.print(message)

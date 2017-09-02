@@ -1,5 +1,9 @@
 """
 Extends GenericSupport with the calls that assume a Linux or Mac environment
+
+How this works:
+
+    http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
 """
 
 import sys
@@ -30,3 +34,11 @@ class UnixSupport(GenericSupport):
     @classmethod
     def getChar(cls):
         return sys.stdin.read(1)
+
+    @classmethod
+    def print(cls, message):
+        sys.stdout.write(message)
+
+        if message.endswith("\n"):
+            # Return the cursor to the left side of the screen
+            sys.stdout.write(u"\u001b[1000D")
