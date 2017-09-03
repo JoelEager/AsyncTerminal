@@ -10,21 +10,20 @@ async def main():
         count += 1
 
         if terminal.isInputWaiting():
-            inputedChars = terminal.readInput()
-
-            terminal.writeln(" and I got some input: " + inputedChars)
-
-            if "q" in inputedChars:
-                terminal.endTasks()
-                return
-
+            terminal.writeln(" and I got some input: " + terminal.readInput())
         else:
             terminal.writeln("")
 
         await asyncio.sleep(1)
 
+def quitHandler(charIn):
+    terminal.endTasks()
+    mainTask.cancel()
+
 try:
-    asyncio.get_event_loop().run_until_complete(main())
-except KeyboardInterrupt:
-    # Exit cleanly on ctrl-c
+    terminal.registerInputHandler(quitHandler, filterString="q")
+    mainTask = asyncio.get_event_loop().create_task(main())
+    asyncio.get_event_loop().run_until_complete(mainTask)
+except (KeyboardInterrupt, asyncio.CancelledError):
+    # Exit cleanly on ctrl-c or cancellation
     pass
