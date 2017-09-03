@@ -3,6 +3,9 @@ import asyncio
 import AsyncTerminal as terminal
 
 async def main():
+    terminal.writeln("Non-blocking input demo for AsyncTerminal:")
+    terminal.writeln("\t(Press q to quit.)\n")
+
     count = 1
 
     while True:
@@ -10,7 +13,7 @@ async def main():
         count += 1
 
         if terminal.isInputWaiting():
-            terminal.writeln(" and I got some input: " + terminal.readInput())
+            terminal.writeln(", and got some input without being blocked: " + terminal.readInput())
         else:
             terminal.writeln("")
 
