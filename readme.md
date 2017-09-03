@@ -1,6 +1,6 @@
 # AsyncTerminal
 An experimental project to create a simple and lightweight library for asynchronous 
-terminal interaction.
+terminal interaction and non-blocking input.
 
 ## Features
 * Built to be used with async IO based programs.
