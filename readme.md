@@ -8,5 +8,8 @@ terminal interaction.
 * Input is collected as it is typed (doesn't wait for enter press) and it isn't echoed to the
 terminal.
 
-## Requirements:
+## Requirements
 * Python 3.5 or newer
+
+## How to run it
+Just drop `python3 demo.py` into your terminal of choice.
